@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hayat Çizelgesi</title>
+<style>
+/* MODERN & MINIMALIST TEMA */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+}
+
+:root {
+  /* Ferah, aydınlık renk paleti */
+  --bg: #F8FAFC;
+  --surface: #FFFFFF;
+  --surface2: #F1F5F9;
+  --surface3: #E2E8F0;
+  
+  /* Modern Mavi Vurgular */
+  --accent: #2563EB;
+  --accent-hover: #1D4ED8;
+  --accent-light: #EFF6FF;
+  
+  /* Metin ve Sınır Renkleri */
+  --text: #0F172A;
+  --text2: #64748B;
+  --border: #E2E8F0;
+  --border-hover: #CBD5E1;
+  
+  /* Durum Renkleri */
+  --success: #10B981;
+  --success-bg: #D1FAE5;
+  --danger: #EF4444;
+  --danger-bg: #FEE2E2;
+  --warning: #F59E0B;
+}
+
+/* Özel Scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text2); }
+
+.app { display: flex; flex-direction: column; min-height: 100vh; }
+
+/* HEADER */
+.header {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.logo { font-size: 20px; font-weight: 800; color: var(--text); letter-spacing: -0.02em; }
+.logo span { color: var(--accent); }
+
+.nav { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
+.nav-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text2);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all .2s ease;
+}
+.nav-btn:hover { background: var(--surface2); color: var(--text); }
+.nav-btn.active { background: var(--accent-light); color: var(--accent); font-weight: 600; }
+
+.save-area { display: flex; gap: 10px; align-items: center; }
+.save-badge {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text2);
+  background: var(--surface2);
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+/* BUTTONS */
+.btn {
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all .2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--accent); color: #fff; box-shadow: 0 2px 4px rgba(37,99,235,0.2); }
+.btn-primary:hover { background: var(--accent-hover); box-shadow: 0 4px 8px rgba(37,99,235,0.3); transform: translateY(-1px); }
+.btn-success { background: var(--success); color: #fff; }
+.btn-success:hover { background: #059669; }
+.btn-danger { background: #fff; color: var(--danger); border: 1px solid var(--border); }
+.btn-danger:hover { background: var(--danger-bg); border-color: #FCA5A5; }
+.btn-sm { padding: 6px 14px; font-size: 13px; }
+.btn-outline { background: #fff; border: 1px solid var(--border); color: var(--text); }
+.btn-outline:hover { background: var(--surface2); border-color: var(--border-hover); }
+
+/* MAIN LAYOUT */
+.main { flex: 1; padding: 32px 20px; max-width: 1000px; margin: 0 auto; width: 100%; }
+.page { display: none; animation: fadeIn 0.3s ease; }
+.page.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: -0.01em;
+}
+
+/* CARDS */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+
+/* RANK CARD - BEYAZ TEMA GÜNCELLEMESİ */
+.rank-card {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+.rank-card .rank-title { font-size: 13px; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 4px; }
+.rank-card .rank-name { font-size: 28px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 8px; }
+.rank-card .rank-points { font-size: 20px; font-weight: 700; color: var(--accent); }
+.rank-card .rank-header { display: flex; justify-content: space-between; align-items: flex-end; }
+.rank-card .progress-bar-wrap { background: var(--surface3); height: 8px; margin-top: 16px; margin-bottom: 8px; border-radius: 999px; }
+.rank-card .progress-bar-fill { background: linear-gradient(90deg, var(--accent), #38BDF8); border-radius: 999px; height: 100%; transition: width 0.4s ease; }
+
+/* TABS */
+.task-type-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 24px;
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 4px;
+  width: fit-content;
+  border: 1px solid var(--border);
+}
+.type-tab {
+  padding: 8px 20px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  background: transparent;
+  color: var(--text2);
+  transition: all .2s;
+}
+.type-tab:hover { color: var(--text); }
+.type-tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+
+.type-tab.weekly.active { color: #92400E; }
+.type-tab.monthly.active { color: #334155; }
+.type-tab.yearly.active { color: #854D0E; }
+
+/* TASKS */
+.task-list { display: flex; flex-direction: column; gap: 10px; }
+.task-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.01);
+}
+.task-item:hover { border-color: var(--border-hover); box-shadow: 0 4px 12px rgba(0,0,0,0.03); transform: translateY(-1px); }
+.task-item.completed { opacity: 0.5; background: var(--surface2); border-color: transparent; box-shadow: none; transform: none; }
+.task-text { flex: 1; font-size: 15px; font-weight: 500; }
+
+/* TAGS */
+.tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.tag-weekly { background: #FEF3C7; color: #92400E; }
+.tag-monthly { background: #F1F5F9; color: #475569; }
+.tag-yearly { background: #FEF08A; color: #854D0E; }
+
+/* FORMS */
+.add-task-form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+.input-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+input[type=text], input[type=number], select, textarea {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  padding: 10px 16px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: all .2s ease;
+}
+input[type=text]:focus, input[type=number]:focus, select:focus, textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+  background: var(--surface);
+}
+input[type=text] { min-width: 0; }
+select option { background: var(--surface); color: var(--text); }
+
+/* WHEEL */
+.wheel-container { display: flex; flex-direction: column; align-items: center; gap: 30px; }
+.wheel-wrapper { position: relative; width: 360px; height: 360px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.05)); }
+canvas#wheelCanvas { border-radius: 50%; cursor: pointer; }
+.wheel-pointer {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-top: 36px solid var(--accent);
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
+  z-index: 10;
+}
+.wheel-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #fff;
+  border: 4px solid var(--surface2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text);
+  z-index: 10;
+  transition: all .2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.wheel-center:hover { background: var(--accent); border-color: var(--accent); color: #fff; transform: translate(-50%, -50%) scale(1.05); }
+
+.result-box {
+  background: var(--surface);
+  border: 2px dashed var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  min-width: 320px;
+}
+.result-box h3 { color: var(--text2); margin-bottom: 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; }
+.result-box p { font-size: 20px; font-weight: 700; color: var(--text); }
+
+/* PROGRESS */
+.progress-section .task-card { padding: 24px; }
+.progress-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+.progress-title { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+.progress-bar-wrap { background: var(--surface3); border-radius: 999px; height: 10px; margin-bottom: 12px; overflow: hidden; }
+.progress-bar-fill { height: 100%; border-radius: 999px; transition: width .4s cubic-bezier(0.4, 0, 0.2, 1); background: var(--accent); }
+.progress-info { display: flex; justify-content: space-between; font-size: 13px; font-weight: 500; color: var(--text2); margin-bottom: 16px; }
+
+.tick-grid { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.tick-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all .2s cubic-bezier(0.4, 0, 0.2, 1);
+  color: transparent;
+}
+.tick-btn:hover { border-color: var(--border-hover); background: var(--surface2); }
+.tick-btn.ticked { background: var(--success); border-color: var(--success); color: #fff; transform: scale(1.05); box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); }
+
+.counter-row { display: flex; align-items: center; gap: 12px; margin-top: 16px; background: var(--surface2); border-radius: 12px; padding: 12px 16px; }
+.counter-label { font-size: 15px; font-weight: 600; color: var(--text); flex: 1; }
+.counter-input { width: 100px; }
+
+.completed-badge { display: flex; align-items: center; gap: 6px; background: var(--success-bg); border-radius: 20px; padding: 6px 14px; color: var(--success); font-size: 13px; font-weight: 700; }
+
+/* MUSEUM & STATS */
+.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 32px; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 24px; text-align: left; box-shadow: 0 2px 10px rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 4px; }
+.stat-num { font-size: 36px; font-weight: 800; color: var(--text); line-height: 1; letter-spacing: -0.03em; }
+.stat-label { font-size: 12px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.05em; }
+
+.museum-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; margin-top: 24px; }
+.trophy {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 24px 16px;
+  text-align: center;
+  transition: all .3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.trophy:hover { transform: translateY(-4px); box-shadow: 0 12px 20px -5px rgba(0,0,0,0.06); border-color: var(--border-hover); }
+.trophy-icon { font-size: 48px; margin-bottom: 12px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
+.trophy-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 6px; line-height: 1.3; }
+.trophy-date { font-size: 12px; color: var(--text2); margin-bottom: 8px; }
+.trophy-type { font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 600; display: inline-block; }
+
+.trophy-bronze .trophy-type { background: #FEF3C7; color: #92400E; }
+.trophy-silver .trophy-type { background: #F1F5F9; color: #475569; }
+.trophy-gold .trophy-type { background: #FEF08A; color: #854D0E; }
+
+.empty-state { text-align: center; padding: 60px 20px; background: var(--surface); border: 1px dashed var(--border-hover); border-radius: 20px; color: var(--text2); font-size: 15px; }
+.empty-state .big-icon { font-size: 56px; margin-bottom: 16px; opacity: 0.8; filter: grayscale(0.5); }
+
+/* MODALS */
+.modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 100; display: none; }
+.modal-overlay.open { display: flex; animation: fadeIn 0.2s ease; }
+.modal { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 32px; max-width: 440px; width: 90%; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+.modal h3 { font-size: 20px; font-weight: 700; margin-bottom: 20px; letter-spacing: -0.01em; }
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+
+.saves-list { display: flex; flex-direction: column; gap: 10px; }
+.save-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all .2s; }
+.save-item:hover { border-color: var(--accent); background: var(--surface2); }
+.save-name { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.save-date { font-size: 12px; color: var(--text2); }
+
+/* WHEEL & TASKS EXTRA */
+.wheel-task-list { display: flex; flex-direction: column; gap: 8px; max-height: 220px; overflow-y: auto; margin: 16px 0; padding-right: 4px; }
+.wheel-task-row { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.01); }
+.wheel-task-name { flex: 1; font-size: 14px; font-weight: 500; }
+.color-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); }
+
+.active-task-banner { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 16px; padding: 24px; margin-bottom: 16px; display: flex; align-items: center; gap: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+.active-task-info { flex: 1; }
+.active-task-type { font-size: 12px; color: var(--text2); margin-bottom: 4px; font-weight: 500; }
+.active-task-name { font-size: 18px; font-weight: 700; color: var(--text); }
+
+.hint { font-size: 13px; color: var(--text2); margin-top: 4px; font-style: normal; }
+hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.flex-wrap { flex-wrap: wrap; }
+
+@media(max-width: 600px) {
+  .grid2 { grid-template-columns: 1fr; }
+  .grid3 { grid-template-columns: 1fr; }
+  .wheel-wrapper { width: 280px; height: 280px; }
+  .header { padding: 16px; flex-direction: column; align-items: flex-start; }
+  .nav { width: 100%; overflow-x: auto; padding-bottom: 4px; }
+  .main { padding: 20px 16px; }
+  .active-task-banner { flex-direction: column; align-items: stretch; text-align: left; }
+}
+</style>
+<!-- Konfeti Kütüphanesi -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+<div class="app">
+<div class="header">
+  <div class="logo">Hayat <span>Çizelgesi</span></div>
+  <div class="nav">
+    <button class="nav-btn active" onclick="goPage('home')">🏠 Ana Sayfa</button>
+    <button class="nav-btn" onclick="goPage('tasks')">📋 Görevler</button>
+    <button class="nav-btn" onclick="goPage('wheel')">🎯 Çark</button>
+    <button class="nav-btn" onclick="goPage('progress')">📊 İlerleme</button>
+    <button class="nav-btn" onclick="goPage('museum')">🏆 Müze</button>
+  </div>
+  <div class="save-area">
+    <span class="save-badge" id="saveLabel">—</span>
+    <button class="btn btn-outline btn-sm" onclick="openSaves()">💾 Kayıtlar</button>
+    <button class="btn btn-primary btn-sm" onclick="quickSave()">Kaydet</button>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  
+  <!-- YENİ: Rütbe Kartı (Beyaz Tema + İkon) -->
+  <div class="card rank-card">
+    <div class="rank-header">
+      <div class="rank-info">
+        <div class="rank-title">Mevcut Rütben</div>
+        <div class="rank-name" id="current-rank-name">Demir 1</div>
+      </div>
+      <div class="rank-points" id="current-points">0 Puan</div>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="rank-progress-fill" style="width: 0%;"></div>
+    </div>
+    <div style="font-size: 13px; color: var(--text2); text-align: right;" id="rank-next-info">Sonraki rütbeye 10 puan kaldı</div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-num" id="stat-weekly">0</div><div class="stat-label">Haftalık Görev</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-monthly">0</div><div class="stat-label">Aylık Görev</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-yearly">0</div><div class="stat-label">Yıllık Görev</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-trophies">0</div><div class="stat-label">Kupa</div></div>
+  </div>
+  <div id="active-tasks-home"></div>
+  <div class="card">
+    <div class="section-title">⚡ Hızlı Başlat</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="goPage('wheel')">🎯 Çarkı Döndür</button>
+      <button class="btn btn-outline" onclick="goPage('progress')">📊 İlerleme Güncelle</button>
+      <button class="btn btn-outline" onclick="goPage('tasks')">➕ Görev Ekle</button>
+    </div>
+  </div>
+</div>
+
+<!-- TASKS -->
+<div id="page-tasks" class="page">
+  <div class="task-type-tabs">
+    <button class="type-tab weekly active" onclick="switchTaskType('weekly',this)">🥉 Haftalık</button>
+    <button class="type-tab monthly" onclick="switchTaskType('monthly',this)">🥈 Aylık</button>
+    <button class="type-tab yearly" onclick="switchTaskType('yearly',this)">🥇 Yıllık</button>
+  </div>
+  <div class="section-title" id="task-list-title">Haftalık Görev Havuzu</div>
+  <div class="hint" style="margin-bottom:12px">Bu havuzdaki görevler çarka eklenebilir ve aktif görev olarak seçilebilir. Puanlar: Haftalık (1), Aylık (5), Yıllık (10).</div>
+  <div class="task-list" id="taskListEl"></div>
+  <div class="add-task-form">
+    <div style="font-size:15px;font-weight:700;margin-bottom:14px;color:var(--text)">➕ Yeni Görev Ekle</div>
+    <div class="input-row">
+      <input type="text" id="newTaskInput" placeholder="Görev adı..." style="flex:1;min-width:180px">
+      <select id="newTaskTrack" style="width:160px">
+        <option value="tick">✅ Tik sistemi</option>
+        <option value="count">🔢 Sayı sayacı</option>
+        <option value="both">✅+🔢 İkisi de</option>
+      </select>
+      <button class="btn btn-success" onclick="addTask()">Ekle</button>
+    </div>
+    <div id="trackConfig" style="margin-top:16px;display:none">
+      <div id="tickConfig" style="display:none">
+        <label style="font-size:13px;font-weight:500;color:var(--text2)">Tik sayısı (hedef):</label>
+        <input type="number" id="tickTarget" min="1" value="3" style="width:80px;margin-left:8px">
+      </div>
+      <div id="countConfig" style="display:none;margin-top:12px">
+        <label style="font-size:13px;font-weight:500;color:var(--text2)">Hedef sayı:</label>
+        <input type="number" id="countTarget" min="1" value="10000" style="width:120px;margin-left:8px">
+        <input type="text" id="countUnit" placeholder="birim (adım, sf...)" style="width:140px;margin-left:8px">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHEEL -->
+<div id="page-wheel" class="page">
+  <div class="grid2">
+    <div>
+      <div class="section-title">🎡 Çark Ayarları</div>
+      <div class="card">
+        <div style="font-size:14px;font-weight:600;margin-bottom:12px">Çarka Görev Ekle</div>
+        <div class="task-type-tabs" style="margin-bottom:12px">
+          <button class="type-tab weekly active" onclick="switchWheelType('weekly',this)">Haftalık</button>
+          <button class="type-tab monthly" onclick="switchWheelType('monthly',this)">Aylık</button>
+          <button class="type-tab yearly" onclick="switchWheelType('yearly',this)">Yıllık</button>
+        </div>
+        <div id="wheelTaskPool" class="wheel-task-list"></div>
+        <div style="font-size:14px;font-weight:600;margin:20px 0 12px">Çarkta Olan Görevler</div>
+        <div id="wheelItems" class="wheel-task-list"></div>
+        <button class="btn btn-outline btn-sm" style="margin-top:12px;width:100%" onclick="clearWheel()">🗑 Çarkı Temizle</button>
+      </div>
+    </div>
+    <div>
+      <div class="section-title">🎯 Çarkı Döndür</div>
+      <div class="wheel-container">
+        <div class="wheel-wrapper">
+          <canvas id="wheelCanvas" width="360" height="360"></canvas>
+          <div class="wheel-pointer"></div>
+          <div class="wheel-center" id="spinBtn" onclick="spinWheel()">ÇEVİR</div>
+        </div>
+        <div class="result-box" id="wheelResult">
+          <h3>Sonuç</h3>
+          <p id="wheelResultText">Çarkı döndür ve görevini öğren!</p>
+          <div id="wheelResultActions" style="margin-top:16px;display:none">
+            <button class="btn btn-success" onclick="setActiveTask()">✅ Bu Görevi Aktif Yap</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div id="page-progress" class="page">
+  <div class="task-type-tabs">
+    <button class="type-tab weekly active" onclick="switchProgressType('weekly',this)">🥉 Haftalık</button>
+    <button class="type-tab monthly" onclick="switchProgressType('monthly',this)">🥈 Aylık</button>
+    <button class="type-tab yearly" onclick="switchProgressType('yearly',this)">🥇 Yıllık</button>
+  </div>
+  <div id="progressContent" class="progress-section"></div>
+</div>
+
+<!-- MUSEUM -->
+<div id="page-museum" class="page">
+  <div class="section-title">🏛 Tamamlanan Görevler Müzesi</div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-num" id="museum-bronze">0</div><div class="stat-label">🥉 Bronz Kupa</div></div>
+    <div class="stat-card"><div class="stat-num" id="museum-silver">0</div><div class="stat-label">🥈 Gümüş Kupa</div></div>
+    <div class="stat-card"><div class="stat-num" id="museum-gold">0</div><div class="stat-label">🥇 Altın Kupa</div></div>
+  </div>
+  <div class="museum-grid" id="museumGrid"></div>
+</div>
+
+</div>
+</div>
+
+<!-- SAVES MODAL -->
+<div class="modal-overlay" id="savesModal">
+<div class="modal">
+  <h3>💾 Kayıtlar</h3>
+  <div style="display:flex;gap:10px;margin-bottom:20px">
+    <input type="text" id="saveNameInput" placeholder="Kayıt adı..." style="flex:1">
+    <button class="btn btn-primary" onclick="saveGame()">Kaydet</button>
+  </div>
+  <div class="saves-list" id="savesList"></div>
+  <div class="modal-actions">
+    <button class="btn btn-outline" onclick="closeSaves()">Kapat</button>
+  </div>
+</div>
+</div>
+
+<!-- COMPLETE MODAL -->
+<div class="modal-overlay" id="completeModal">
+<div class="modal" style="text-align:center">
+  <div style="font-size:72px;margin-bottom:16px" id="completeEmoji">🏆</div>
+  <h3 id="completeTitle" style="font-size:24px">Görev Tamamlandı!</h3>
+  <p style="color:var(--text2);margin:12px 0 24px;font-size:15px" id="completeDesc"></p>
+  <button class="btn btn-primary" style="width:100%;padding:12px;font-size:16px" onclick="closeCompleteModal()">Müzeye Ekle 🎉</button>
+</div>
+</div>
+
+<!-- RANK UP MODAL (YENİ) -->
+<div class="modal-overlay" id="rankUpModal">
+  <div class="modal" style="text-align:center">
+    <div style="font-size:72px;margin-bottom:16px" id="rankUpEmoji">🚀</div>
+    <h3 id="rankUpTitle" style="font-size:24px">Tebrikler, Rütbe Atladın!</h3>
+    <p style="color:var(--text2);margin:12px 0 24px;font-size:16px" id="rankUpDesc"></p>
+    <button class="btn btn-success" style="width:100%;padding:12px;font-size:16px" onclick="closeRankUpModal()">Devam Et</button>
+  </div>
+</div>
+
+<script>
+const COLORS=['#93C5FD','#86EFAC','#FCD34D','#FCA5A5','#C4B5FD','#67E8F9','#FDA4AF','#BEF264','#A5B4FC','#5EEAD4','#FDBA74','#F0ABFC'];
+const RANKS = [
+  "Demir 1", "Demir 2", "Demir 3",
+  "Gümüş 1", "Gümüş 2", "Gümüş 3",
+  "Altın 1", "Altın 2", "Altın 3",
+  "Elmas 1", "Elmas 2", "Elmas 3",
+  "Zümrüt 1", "Zümrüt 2", "Zümrüt 3",
+  "Yücelik 1", "Yücelik 2", "Yücelik 3",
+  "Global 1", "Global 2", "Global 3"
+];
+
+let state={
+  tasks:{weekly:[],monthly:[],yearly:[]},
+  activeTasks:{weekly:null,monthly:null,yearly:null},
+  // Çark öğeleri artık her sekme için ayrı dizilerde tutuluyor
+  wheelItems:{weekly:[],monthly:[],yearly:[]},
+  museum:[],
+  currentSaveName:'Otomatik Kayıt',
+  lastSpun:null,
+  lastSpunType:'weekly'
+};
+
+let currentTaskType='weekly';
+let currentWheelType='weekly';
+let currentProgressType='weekly';
+let spinning=false;
+let spinAngle=0;
+let pendingRankUp=null; // Rütbe atlama kontrolü için global bayrak
+
+// Rütbe İkonları Fonksiyonu (YENİ)
+function getRankIcon(name) {
+  if(name.includes('Demir')) return '🪨';
+  if(name.includes('Gümüş')) return '🥈';
+  if(name.includes('Altın')) return '🥇';
+  if(name.includes('Elmas')) return '💎';
+  if(name.includes('Zümrüt')) return '🟩';
+  if(name.includes('Yücelik')) return '🔮';
+  if(name.includes('Global')) return '🌍';
+  return '⭐';
+}
+
+// Rank Hesaplama Fonksiyonları
+function calculatePoints() {
+  return state.museum.reduce((acc, curr) => {
+    if(curr.type === 'weekly') return acc + 1;
+    if(curr.type === 'monthly') return acc + 5;
+    if(curr.type === 'yearly') return acc + 10;
+    return acc;
+  }, 0);
+}
+
+function getRankData(points) {
+  let index = Math.floor(points / 10);
+  if (index >= RANKS.length) index = RANKS.length - 1;
+  
+  let currentRank = RANKS[index];
+  let isMaxRank = index === (RANKS.length - 1);
+  
+  let pointsInCurrentRank = points % 10;
+  let pointsNeeded = 10 - pointsInCurrentRank;
+  
+  if (isMaxRank) {
+      pointsInCurrentRank = 10;
+      pointsNeeded = 0;
+  }
+  
+  return {
+      name: currentRank,
+      progressPercent: isMaxRank ? 100 : (pointsInCurrentRank / 10) * 100,
+      nextPoints: pointsNeeded,
+      isMaxRank: isMaxRank
+  };
+}
+
+function getLS(){try{return JSON.parse(localStorage.getItem('hc_saves')||'{}')}catch(e){return{}}}
+function setLS(d){try{localStorage.setItem('hc_saves',JSON.stringify(d))}catch(e){}}
+
+function saveGame(name){
+  name=name||(document.getElementById('saveNameInput').value.trim()||'Kayıt '+(Date.now()));
+  const saves=getLS();
+  saves[name]={data:JSON.stringify(state),date:new Date().toLocaleString('tr-TR')};
+  setLS(saves);
+  state.currentSaveName=name;
+  document.getElementById('saveLabel').textContent=name;
+  renderSavesList();
+}
+
+function loadSave(name){
+  const saves=getLS();
+  if(saves[name]){
+    state=JSON.parse(saves[name].data);
+    
+    // Eski versiyon "tekli çark" kayıtlarını yeni "üçlü çark" sistemine geçirme (Migration)
+    if(Array.isArray(state.wheelItems)){
+       let oldWheel = state.wheelItems;
+       state.wheelItems = {weekly:[], monthly:[], yearly:[]};
+       oldWheel.forEach(w => {
+           if(state.wheelItems[w.type]) state.wheelItems[w.type].push(w);
+       });
+    }
+
+    state.currentSaveName=name;
+    document.getElementById('saveLabel').textContent=name;
+    render();
+    closeSaves();
+  }
+}
+
+function deleteSave(name){
+  const saves=getLS();
+  delete saves[name];
+  setLS(saves);
+  renderSavesList();
+}
+function quickSave(){saveGame(state.currentSaveName);showToast('Kaydedildi ✓')}
+function openSaves(){document.getElementById('savesModal').classList.add('open');renderSavesList()}
+function closeSaves(){document.getElementById('savesModal').classList.remove('open')}
+function renderSavesList(){
+  const saves=getLS();
+  const el=document.getElementById('savesList');
+  const keys=Object.keys(saves);
+  if(!keys.length){el.innerHTML='<div style="text-align:center;color:var(--text2);padding:20px">Henüz kayıt yok</div>';return}
+  el.innerHTML=keys.map(k=>`<div class="save-item" onclick="loadSave('${k}')">
+    <div><div class="save-name">${k}</div><div class="save-date">${saves[k].date}</div></div>
+    <button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteSave('${k}')">Sil</button>
+  </div>`).join('');
+}
+function showToast(msg){
+  let t=document.getElementById('toast');
+  if(!t){t=document.createElement('div');t.id='toast';t.style.cssText='position:fixed;bottom:24px;right:24px;background:var(--success);color:#fff;padding:12px 20px;border-radius:12px;font-size:14px;font-weight:600;z-index:999;opacity:0;transition:all .3s ease;box-shadow:0 10px 15px -3px rgba(16,185,129,0.3)';document.body.appendChild(t)}
+  t.textContent=msg;t.style.opacity=1;t.style.transform='translateY(0)';
+  setTimeout(()=>{t.style.opacity=0;t.style.transform='translateY(10px)';},2500);
+}
+function goPage(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  const idx={'home':0,'tasks':1,'wheel':2,'progress':3,'museum':4}[p];
+  document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  render();
+}
+function addTask(){
+  const name=document.getElementById('newTaskInput').value.trim();
+  if(!name)return;
+  const track=document.getElementById('newTaskTrack').value;
+  const task={id:Date.now(),name,track,ticks:0,tickTarget:3,count:0,countTarget:10000,countUnit:'',completed:false};
+  if(track==='tick'||track==='both') task.tickTarget=parseInt(document.getElementById('tickTarget').value)||3;
+  if(track==='count'||track==='both'){task.countTarget=parseInt(document.getElementById('countTarget').value)||10000;task.countUnit=document.getElementById('countUnit').value||'';}
+  state.tasks[currentTaskType].push(task);
+  document.getElementById('newTaskInput').value='';
+  renderTasks();
+  quickSave();
+}
+function removeTask(type,id){
+  state.tasks[type]=state.tasks[type].filter(t=>t.id!==id);
+  if(state.activeTasks[type]&&state.activeTasks[type].id===id) state.activeTasks[type]=null;
+  // Güncellenmiş Çark Filtrelemesi
+  state.wheelItems[type]=state.wheelItems[type].filter(w=>w.id!==id);
+  renderTasks();renderWheel();renderProgress();quickSave();
+}
+function switchTaskType(t,btn){
+  currentTaskType=t;
+  document.querySelectorAll('#page-tasks .type-tab').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');
+  const names={weekly:'Haftalık',monthly:'Aylık',yearly:'Yıllık'};
+  document.getElementById('task-list-title').textContent=names[t]+' Görev Havuzu';
+  renderTasks();
+}
+function switchWheelType(t,btn){
+  currentWheelType=t;
+  document.querySelectorAll('#page-wheel .type-tab').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');
+  renderWheel();
+}
+function switchProgressType(t,btn){
+  currentProgressType=t;
+  document.querySelectorAll('#page-progress .type-tab').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');
+  renderProgress();
+}
+function renderTasks(){
+  const tasks=state.tasks[currentTaskType];
+  const el=document.getElementById('taskListEl');
+  const track=document.getElementById('newTaskTrack').value;
+  document.getElementById('trackConfig').style.display='block';
+  document.getElementById('tickConfig').style.display=(track==='tick'||track==='both')?'block':'none';
+  document.getElementById('countConfig').style.display=(track==='count'||track==='both')?'block':'none';
+  document.getElementById('newTaskTrack').onchange=function(){
+    const v=this.value;
+    document.getElementById('tickConfig').style.display=(v==='tick'||v==='both')?'block':'none';
+    document.getElementById('countConfig').style.display=(v==='count'||v==='both')?'block':'none';
+  };
+  if(!tasks.length){el.innerHTML='<div class="empty-state"><div class="big-icon">📝</div><div>Henüz görev yok.<br>Aşağıdan ekleyebilirsin.</div></div>';return}
+  el.innerHTML=tasks.map(t=>`<div class="task-item ${t.completed?'completed':''}">
+    <div class="task-text">${t.name}</div>
+    <span class="tag tag-${currentTaskType}">${{weekly:'Haftalık',monthly:'Aylık',yearly:'Yıllık'}[currentTaskType]}</span>
+    <span style="font-size:12px;font-weight:500;color:var(--text2)">${t.track==='tick'?'✅ Tik':t.track==='count'?'🔢 Sayı':'✅+🔢'}</span>
+    <button class="btn btn-outline btn-sm" onclick="setActiveFromPool('${currentTaskType}',${t.id})">Aktif Yap</button>
+    <button class="btn btn-danger btn-sm" onclick="removeTask('${currentTaskType}',${t.id})">🗑</button>
+  </div>`).join('');
+}
+function setActiveFromPool(type,id){
+  const task=state.tasks[type].find(t=>t.id===id);
+  if(task){
+    state.activeTasks[type]={...task,ticks:task.ticks||0,count:task.count||0};
+    renderProgress();renderHome();showToast('Aktif görev ayarlandı ✓');quickSave();
+  }
+}
+function renderWheelPool(){
+  const tasks=state.tasks[currentWheelType];
+  const pool=document.getElementById('wheelTaskPool');
+  if(!tasks.length){pool.innerHTML='<div style="color:var(--text2);font-size:13px;padding:8px">Bu türde görev yok. Önce görev ekle.</div>';return}
+  pool.innerHTML=tasks.map((t,i)=>`<div class="wheel-task-row">
+    <div class="color-dot" style="background:${COLORS[i%COLORS.length]}"></div>
+    <span class="wheel-task-name">${t.name}</span>
+    <button class="btn btn-outline btn-sm" onclick="addToWheel(${t.id},'${currentWheelType}')">+ Ekle</button>
+  </div>`).join('');
+}
+function addToWheel(id,type){
+  if(state.wheelItems[type].find(w=>w.id===id)){showToast('Zaten çarkta!');return}
+  const task=state.tasks[type].find(t=>t.id===id);
+  if(task) state.wheelItems[type].push({id,type,name:task.name});
+  renderWheelItems();drawWheel();quickSave();
+}
+function removeFromWheel(id,type){
+  state.wheelItems[type]=state.wheelItems[type].filter(w=>w.id!==id);
+  renderWheelItems();drawWheel();quickSave();
+}
+function clearWheel(){
+  state.wheelItems[currentWheelType]=[];
+  renderWheelItems();drawWheel();quickSave();
+}
+function renderWheelItems(){
+  const el=document.getElementById('wheelItems');
+  const items = state.wheelItems[currentWheelType] || [];
+  if(!items.length){el.innerHTML='<div style="color:var(--text2);font-size:13px;padding:8px">Çark boş</div>';return}
+  el.innerHTML=items.map((w,i)=>`<div class="wheel-task-row">
+    <div class="color-dot" style="background:${COLORS[i%COLORS.length]}"></div>
+    <span class="wheel-task-name">${w.name}</span>
+    <span class="tag tag-${w.type}" style="font-size:10px">${{weekly:'Haftalık',monthly:'Aylık',yearly:'Yıllık'}[w.type]}</span>
+    <button class="btn btn-danger btn-sm" onclick="removeFromWheel(${w.id},'${w.type}')">✕</button>
+  </div>`).join('');
+}
+function drawWheel(){
+  const canvas=document.getElementById('wheelCanvas');
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const items = state.wheelItems[currentWheelType] || [];
+  const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2,r=cx-8;
+  ctx.clearRect(0,0,W,H);
+  if(!items.length){
+    ctx.fillStyle='#F1F5F9';ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#64748B';ctx.font='600 14px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('Görev ekle',cx,cy);return;
+  }
+  const slice=(Math.PI*2)/items.length;
+  items.forEach((item,i)=>{
+    const start=spinAngle+i*slice;
+    const end=start+slice;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,start,end);ctx.closePath();
+    ctx.fillStyle=COLORS[i%COLORS.length];ctx.fill();
+    ctx.strokeStyle='#FFFFFF';ctx.lineWidth=3;ctx.stroke(); 
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(start+slice/2);
+    ctx.textAlign='right';ctx.fillStyle='#0F172A';ctx.font='bold 12px system-ui'; 
+    const label=item.name.length>18?item.name.slice(0,17)+'…':item.name;
+    ctx.fillText(label,r-16,4);ctx.restore();
+  });
+  ctx.beginPath();ctx.arc(cx,cy,32,0,Math.PI*2);ctx.fillStyle='#FFFFFF';ctx.fill(); 
+  ctx.lineWidth=4;ctx.strokeStyle='#F1F5F9';ctx.stroke();
+}
+function spinWheel(){
+  const items = state.wheelItems[currentWheelType] || [];
+  if(spinning||!items.length){if(!items.length)showToast('Önce çarka görev ekle!');return}
+  spinning=true;
+  document.getElementById('spinBtn').textContent='...';
+  const totalRotation=(Math.PI*2)*6+Math.random()*Math.PI*2;
+  const duration=4000;const start=performance.now();const startAngle=spinAngle;
+  function animate(now){
+    const elapsed=now-start;const progress=Math.min(elapsed/duration,1);
+    const ease=1-Math.pow(1-progress,4);
+    spinAngle=startAngle+totalRotation*ease;
+    drawWheel();
+    if(progress<1){requestAnimationFrame(animate)}else{
+      spinning=false;
+      const slice=(Math.PI*2)/items.length;
+      const normalAngle=((spinAngle%(Math.PI*2))+Math.PI*2)%(Math.PI*2);
+      const pointer=(Math.PI*3/2-normalAngle+Math.PI*2*4)%(Math.PI*2);
+      const idx=Math.floor(pointer/slice)%items.length;
+      const winner=items[idx];
+      state.lastSpun=winner;
+      state.lastSpunType=winner.type;
+      document.getElementById('wheelResultText').textContent=winner.name;
+      document.getElementById('wheelResultActions').style.display='block';
+      document.getElementById('spinBtn').textContent='ÇEVİR';
+    }
+  }
+  requestAnimationFrame(animate);
+}
+function setActiveTask(){
+  if(!state.lastSpun) return;
+  const {id,type}=state.lastSpun;
+  const task=state.tasks[type].find(t=>t.id===id);
+  if(task){
+    state.activeTasks[type]={...task,ticks:task.ticks||0,count:task.count||0};
+    showToast('Aktif görev ayarlandı! 🎯');quickSave();
+    goPage('progress');
+  }
+}
+function renderProgress(){
+  const el=document.getElementById('progressContent');
+  const type=currentProgressType;
+  const active=state.activeTasks[type];
+  if(!active){
+    el.innerHTML=`<div class="empty-state"><div class="big-icon">🎯</div><div>Aktif görev yok.<br>Çarktan veya görev listesinden seçebilirsin.</div></div>`;
+    return;
+  }
+  if(active.completed){
+    el.innerHTML=`<div class="task-card card"><div class="progress-header"><div><div class="progress-title">${active.name}</div></div><div class="completed-badge">✅ Tamamlandı!</div></div><p style="color:var(--text2);font-size:14px;margin-bottom:16px;">Bu görev tamamlandı ve müzeye eklendi.</p><button class="btn btn-outline" style="width:100%" onclick="resetActiveTask('${type}')">Yeni Görev Seç</button></div>`;
+    return;
+  }
+  let tickHTML='',countHTML='',totalProgress=0;
+  if(active.track==='tick'||active.track==='both'){
+    const tt=active.tickTarget||3;
+    tickHTML=`<div style="margin-top:16px">
+      <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px">Tik İlerlemesi (${active.ticks}/${tt})</div>
+      <div class="tick-grid">
+        ${Array.from({length:tt},(_,i)=>`<button class="tick-btn ${i<active.ticks?'ticked':''}" onclick="toggleTick('${type}',${i})">✓</button>`).join('')}
+      </div>
+    </div>`;
+    if(active.track==='tick') totalProgress=Math.min(100,Math.round((active.ticks/tt)*100));
+  }
+  if(active.track==='count'||active.track==='both'){
+    const ct=active.countTarget||10000;const cu=active.countUnit||'';
+    countHTML=`<div class="counter-row">
+      <span class="counter-label">📍 ${active.count.toLocaleString('tr-TR')} / ${ct.toLocaleString('tr-TR')} ${cu}</span>
+      <input type="number" class="counter-input" id="countInputEl" value="${active.count}" min="0">
+      <button class="btn btn-primary" onclick="updateCount('${type}')">Güncelle</button>
+    </div>`;
+    if(active.track==='count') totalProgress=Math.min(100,Math.round((active.count/ct)*100));
+  }
+  if(active.track==='both'){
+    const tp1=Math.min(1,(active.ticks/(active.tickTarget||3)));
+    const tp2=Math.min(1,(active.count/(active.countTarget||10000)));
+    totalProgress=Math.round(((tp1+tp2)/2)*100);
+  }
+  el.innerHTML=`<div class="task-card card">
+    <div class="progress-header">
+      <div>
+        <div class="progress-title">${active.name}</div>
+        <span class="tag tag-${type}" style="margin-top:8px">${{weekly:'Haftalık',monthly:'Aylık',yearly:'Yıllık'}[type]}</span>
+      </div>
+      <div style="font-size:32px;font-weight:800;color:var(--accent);line-height:1">${totalProgress}%</div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${totalProgress}%"></div></div>
+    <div class="progress-info"><span>Tamamlanma Oranı</span><span>${totalProgress}%</span></div>
+    ${tickHTML}${countHTML}
+    <div style="display:flex;gap:12px;margin-top:24px;">
+      <button class="btn btn-outline" style="flex:1" onclick="resetActiveTask('${type}')">Değiştir</button>
+      <button class="btn btn-success" style="flex:2;font-size:15px;" onclick="completeTask('${type}')">🏆 Tamamla!</button>
+    </div>
+  </div>`;
+}
+function toggleTick(type,idx){
+  const a=state.activeTasks[type];if(!a)return;
+  a.ticks=idx<a.ticks?idx:idx+1;
+  renderProgress();quickSave();
+}
+function updateCount(type){
+  const a=state.activeTasks[type];if(!a)return;
+  const val=parseInt(document.getElementById('countInputEl').value)||0;
+  a.count=Math.max(0,val);
+  renderProgress();quickSave();
+}
+function completeTask(type){
+  const a=state.activeTasks[type];if(!a)return;
+  
+  // Rütbe kontrolü öncesi
+  const oldPts = calculatePoints();
+  const oldRank = getRankData(oldPts).name;
+
+  a.completed=true;
+  
+  // Konfeti Efekti
+  if (typeof confetti === 'function') {
+    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, zIndex: 9999 });
+  }
+
+  const trophyTypes={weekly:{emoji:'🥉',label:'Bronz Kupa',cls:'trophy-bronze'},monthly:{emoji:'🥈',label:'Gümüş Kupa',cls:'trophy-silver'},yearly:{emoji:'🥇',label:'Altın Kupa',cls:'trophy-gold'}};
+  const t=trophyTypes[type];
+  state.museum.push({id:Date.now(),name:a.name,type,emoji:t.emoji,label:t.label,cls:t.cls,date:new Date().toLocaleDateString('tr-TR')});
+  
+  document.getElementById('completeEmoji').textContent=t.emoji;
+  document.getElementById('completeTitle').textContent='Tebrikler! '+t.label+' Kazandın!';
+  
+  let pointEarned = type === 'weekly' ? 1 : (type === 'monthly' ? 5 : 10);
+  document.getElementById('completeDesc').textContent='"'+a.name+'" görevi başarıyla tamamlandı! +' + pointEarned + ' Puan kazandın!';
+  
+  // Rütbe atlama kontrolü sonrası
+  const newPts = calculatePoints();
+  const newRankData = getRankData(newPts);
+  if (newRankData.name !== oldRank) {
+      pendingRankUp = newRankData.name; // Modal kapanınca rütbe mesajı gösterilecek
+  }
+
+  document.getElementById('completeModal').classList.add('open');
+  renderProgress();renderMuseum();renderHome();quickSave();
+}
+function closeCompleteModal(){
+    document.getElementById('completeModal').classList.remove('open');
+    // Eğer rütbe atlama bayrağı aktifse rütbe kutlamasını aç
+    if (pendingRankUp) {
+        setTimeout(() => {
+            showRankUpModal(pendingRankUp);
+            pendingRankUp = null;
+        }, 300); // 300ms sonra, tamamlama menüsü kapandıktan hemen sonra
+    }
+}
+
+// Yeni Rütbe Modal Fonksiyonları
+function showRankUpModal(rankName) {
+    document.getElementById('rankUpEmoji').textContent = getRankIcon(rankName);
+    document.getElementById('rankUpDesc').innerHTML = `Harika bir iş çıkardın!<br>Mevcut rütben artık: <b>${rankName}</b>`;
+    document.getElementById('rankUpModal').classList.add('open');
+    if (typeof confetti === 'function') {
+        confetti({ particleCount: 200, spread: 120, origin: { y: 0.5 }, zIndex: 9999 });
+    }
+}
+function closeRankUpModal() {
+    document.getElementById('rankUpModal').classList.remove('open');
+}
+
+function resetActiveTask(type){state.activeTasks[type]=null;renderProgress();quickSave()}
+function renderMuseum(){
+  const trophies=state.museum;
+  const el=document.getElementById('museumGrid');
+  document.getElementById('museum-bronze').textContent=trophies.filter(t=>t.type==='weekly').length;
+  document.getElementById('museum-silver').textContent=trophies.filter(t=>t.type==='monthly').length;
+  document.getElementById('museum-gold').textContent=trophies.filter(t=>t.type==='yearly').length;
+  if(!trophies.length){el.innerHTML='<div class="empty-state" style="grid-column:1/-1"><div class="big-icon">🏛</div><div>Müze henüz boş.<br>Görevleri tamamlayarak kupalarını buraya ekle!</div></div>';return}
+  el.innerHTML=trophies.map(t=>`<div class="trophy ${t.cls}">
+    <div class="trophy-icon">${t.emoji}</div>
+    <div class="trophy-name">${t.name}</div>
+    <div class="trophy-date">${t.date}</div>
+    <div class="trophy-type">${t.label}</div>
+  </div>`).join('');
+}
+function renderHome(){
+  // Rank Güncellemesi
+  const pts = calculatePoints();
+  const rData = getRankData(pts);
+  
+  // İkon ile Rütbe Adı Eşleşmesi
+  document.getElementById('current-rank-name').innerHTML = `${rData.name} <span>${getRankIcon(rData.name)}</span>`;
+  document.getElementById('current-points').textContent = pts + ' Puan';
+  document.getElementById('rank-progress-fill').style.width = rData.progressPercent + '%';
+  
+  if (rData.isMaxRank) {
+    document.getElementById('rank-next-info').textContent = 'Maksimum rütbedesin, efsanesin!';
+  } else {
+    document.getElementById('rank-next-info').textContent = `Sonraki rütbeye ${rData.nextPoints} puan kaldı`;
+  }
+
+  // İstatistikler
+  document.getElementById('stat-weekly').textContent=state.tasks.weekly.length;
+  document.getElementById('stat-monthly').textContent=state.tasks.monthly.length;
+  document.getElementById('stat-yearly').textContent=state.tasks.yearly.length;
+  document.getElementById('stat-trophies').textContent=state.museum.length;
+  
+  const banners=document.getElementById('active-tasks-home');
+  const types=['weekly','monthly','yearly'];
+  const labels={weekly:'Haftalık',monthly:'Aylık',yearly:'Yıllık'};
+  
+  // YENİ: Sadece Tamamlanmamış olan aktif görevleri göster
+  const html=types.filter(t=>state.activeTasks[t] && !state.activeTasks[t].completed).map(t=>{
+    const a=state.activeTasks[t];
+    let prog=0;
+    if(a.track==='tick') prog=Math.round(((a.ticks||0)/(a.tickTarget||3))*100);
+    else if(a.track==='count') prog=Math.round(((a.count||0)/(a.countTarget||10000))*100);
+    else prog=Math.round((((a.ticks||0)/(a.tickTarget||3))+((a.count||0)/(a.countTarget||10000)))/2*100);
+    prog=Math.min(100,prog);
+    return `<div class="active-task-banner">
+      <span class="tag tag-${t}">${labels[t]}</span>
+      <div class="active-task-info">
+        <div class="active-task-name">${a.name}</div>
+        <div class="progress-bar-wrap" style="margin-top:10px;margin-bottom:6px;"><div class="progress-bar-fill" style="width:${prog}%"></div></div>
+        <div style="font-size:12px;font-weight:600;color:var(--text2);">${prog}% tamamlandı</div>
+      </div>
+      <button class="btn btn-primary" onclick="goPage('progress')">İlerle</button>
+    </div>`;
+  }).join('');
+  banners.innerHTML=html||'<div class="empty-state" style="margin-bottom:16px"><div class="big-icon">🎯</div><div>Henüz aktif görev yok.<br>Çarkı döndür veya görev listesinden seç!</div></div>';
+}
+function renderWheel(){
+  renderWheelPool();
+  renderWheelItems();
+  drawWheel();
+}
+function render(){
+  renderTasks();
+  renderWheel();
+  renderProgress();
+  renderMuseum();
+  renderHome();
+}
+window.addEventListener('load',()=>{
+  const saves=getLS();
+  const keys=Object.keys(saves);
+  if(keys.length){
+    const last=keys[keys.length-1];
+    try{
+        state=JSON.parse(saves[last].data);
+        
+        // Eski versiyon "tekli çark" kayıtlarını yeni "üçlü çark" sistemine geçirme (Migration)
+        if(Array.isArray(state.wheelItems)){
+           let oldWheel = state.wheelItems;
+           state.wheelItems = {weekly:[], monthly:[], yearly:[]};
+           oldWheel.forEach(w => {
+               if(state.wheelItems[w.type]) state.wheelItems[w.type].push(w);
+           });
+        }
+        
+        state.currentSaveName=last;
+        document.getElementById('saveLabel').textContent=last;
+    }catch(e){}
+  }
+  render();
+  drawWheel();
+});
+</script>
+</body>
+</html>
